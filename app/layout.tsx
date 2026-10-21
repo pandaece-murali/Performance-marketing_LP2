@@ -19,9 +19,6 @@ export const metadata: Metadata = {
     "ROAS",
     "CRM and Lead Tracking",
   ],
-  icons: {
-    icon: "/icon.png",
-  },
   openGraph: {
     title: "PANDAeCe | Performance Marketing Agency",
     description:
