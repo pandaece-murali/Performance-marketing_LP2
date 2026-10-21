@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -214,7 +215,28 @@ function ConsultationButton({
     <a
       href="#contact-form"
       className={`button button-primary ${className}`}
-      onClick={onClick}
+      onClick={(event) => {
+        onClick?.();
+
+        const form = document.getElementById("contact-form");
+        if (!form) return;
+
+        event.preventDefault();
+        window.history.replaceState(null, "", "#contact-form");
+
+        const headerHeight =
+          document.querySelector(".site-header")?.getBoundingClientRect().height ?? 0;
+        const top =
+          window.scrollY + form.getBoundingClientRect().top - headerHeight - 16;
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        window.scrollTo({
+          top: Math.max(0, top),
+          behavior: reduceMotion ? "auto" : "smooth",
+        });
+      }}
     >
       <span>{children}</span>
       <span className="button-arrow">
@@ -663,9 +685,10 @@ function FAQ() {
 }
 
 function ContactForm() {
+  const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<{
-    type: "success" | "error";
+    type: "error";
     message: string;
   } | null>(null);
 
@@ -706,13 +729,8 @@ function ContactForm() {
         throw new Error(result?.error || "Lead submission failed");
       }
 
-      setStatus({
-        type: "success",
-        message:
-          "Thank you! Your consultation request has been submitted successfully.",
-      });
-
       form.reset();
+      router.push("/thank-you");
     } catch (error) {
       setStatus({
         type: "error",
@@ -727,7 +745,13 @@ function ContactForm() {
   }
 
   return (
-    <form id="contact-form" className="contact-form" onSubmit={handleSubmit}>
+    <form
+      id="contact-form"
+      className="contact-form"
+      method="post"
+      action="/api/leads"
+      onSubmit={handleSubmit}
+    >
       <div className="form-heading">
         <p className="form-eyebrow">
           <span className="live-dot" />
@@ -847,11 +871,7 @@ function ContactForm() {
 
       {status && (
         <p
-          className={`form-status ${
-            status.type === "success"
-              ? "form-status-success"
-              : "form-status-error"
-          }`}
+          className="form-status form-status-error"
           role="status"
           aria-live="polite"
         >

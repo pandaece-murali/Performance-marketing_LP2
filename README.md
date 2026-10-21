@@ -16,15 +16,23 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Contact form delivery
+## GoHighLevel contact form delivery
 
-The contact form sends submissions to `POST /api/leads`. Set `LEADS_WEBHOOK_URL`
-in the server environment to the HTTPS endpoint that should receive lead JSON
-(for example, an automation webhook connected to your CRM). The endpoint must
-accept a JSON `POST` and return a successful HTTP status. Add the variable to
-`.env.local` for local development and to your hosting provider's environment
-settings for deployment, then restart the server. Without this setting, the API
-returns an explicit configuration error instead of silently losing submissions.
+The contact form posts to `POST /api/leads`. The server upserts the contact
+directly through the GoHighLevel Contacts API. Configure these server-only
+environment variables in Vercel and redeploy:
+
+- `GHL_API_KEY`: a Private Integration Token for the target sub-account with
+  `contacts.write` access.
+- `GHL_LOCATION_ID`: the ID of that GHL sub-account/location.
+
+For local development, put these variables in `.env.local` and restart the dev
+server. The endpoint sends the contact's name, email, phone, business name,
+source, and the service and goals in the `service_needed` and `message` custom
+fields. It also adds `performance marketing`, `google ads`, `meta ads`, and
+`digital marketing` tags, plus a tag for the selected service. Create the
+custom fields in GHL with matching keys before using the form. Keep the API
+token out of client code and source control.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
