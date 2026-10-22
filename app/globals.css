@@ -2377,6 +2377,68 @@ section {
   }
 }
 
+/* TYPOGRAPHY: improve reading size across desktop and mobile */
+.nav-links a {
+  color: #172d5b;
+  font-size: clamp(14px, 1.1vw, 16px);
+  font-weight: 800;
+}
+
+body {
+  font-size: 16px;
+}
+
+.section-title {
+  font-size: clamp(32px, 3.8vw, 46px);
+}
+
+.section-description,
+.hero-description,
+.about-copy p {
+  font-size: 16px;
+}
+
+.service-card > p,
+.faq-intro > p:not(.section-kicker),
+.final-cta-content > p:not(.section-kicker),
+.contact-description {
+  font-size: 15px;
+}
+
+.problem-cell p,
+.faq-item > p,
+.contact-benefits li {
+  font-size: 14px;
+}
+
+.testimonial-card blockquote {
+  font-size: 16px;
+}
+
+.faq-question {
+  font-size: 15px;
+}
+
+@media (max-width: 760px) {
+  .nav-links a {
+    font-size: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(30px, 7.4vw, 38px);
+  }
+
+  .section-description,
+  .hero-description,
+  .about-copy p {
+    font-size: 16px;
+  }
+
+  .hero-description {
+    line-height: 1.75;
+  }
+}
+
 /* ACCESSIBILITY: RESPECT REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
