@@ -2406,6 +2406,7 @@ body {
 }
 
 .problem-cell p,
+.solution-cell p,
 .faq-item > p,
 .contact-benefits li {
   font-size: 14px;
