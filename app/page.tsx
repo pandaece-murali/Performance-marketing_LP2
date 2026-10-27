@@ -364,7 +364,7 @@ function Hero() {
             CPQL focused
             <br />
             <span className="accent-text">
-              Performance marketing services
+              Performance marketing agency
             </span>
           </h1>
 
